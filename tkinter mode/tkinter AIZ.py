@@ -23,7 +23,7 @@ root.title("Auto Install Zabbix")
 
 # DIMENSÕES
 LARGURA_APP = 500
-ALTURA_APP = 400
+ALTURA_APP = 200
 DEFAULT_PADX = 60
 DEFAULT_PADY = 20
 SHORT_PADX = 10
@@ -38,10 +38,10 @@ POS_X = LARGURA_TELA/2 - LARGURA_APP/2
 POS_Y = ALTURA_TELA/2 - ALTURA_APP/2
 # GEOMETRIA
 root.geometry("%dx%d+%d+%d" % (LARGURA_APP, ALTURA_APP, POS_X, POS_Y))
-root.resizable(False, False)
+root.resizable(True, True)
 root.wm_attributes('-transparentcolor', '#add123')
-#root.minsize(LARGURA_APP, ALTURA_APP)
-#root.maxsize()
+root.minsize(LARGURA_APP, ALTURA_APP)
+root.maxsize()
 
 # <@------------------------------------------------------------------------@>
 # Frames POR CLASSE
@@ -64,12 +64,31 @@ class Menu_Principal_Get_Host_Info(Frame):
         # /--------------------------------------------------------/ FRAME WIDGETS
         
         #
-        frame_conteudo=Frame(self, bg='purple')
-        frame_footer=Frame(self, bg='green')
+        frame_conteudo=Frame(self) # bg:purple
+        frame_footer=Frame(self) # bg:green
         #
         
+        # ---------------------- ZABBIX SERVER IP
+        
+        frame_zabbixserverip = Frame(frame_conteudo, width=MENU_PRINCIPAL_WIDTH-(MENU_PRINCIPAL_PADX*3),height=21) # bg:pink
+        frame_zabbixserverip.grid_columnconfigure(0, weight=1)
+        frame_zabbixserverip.grid_columnconfigure(1, weight=9)
+        frame_zabbixserverip.grid_propagate(0)
+        # ZABBIX SERVER IP (Widgets)
+        label_zabbixserverip = Label(
+            frame_zabbixserverip,
+            text="ZBX/Server IP:",
+            width=15,
+            anchor=W)
+        entry_zabbixserverip = Entry(frame_zabbixserverip)
+        # ZABBIX SERVER IP (Grid)
+        label_zabbixserverip.grid(row=0, column=0, sticky='EW')
+        entry_zabbixserverip.grid(row=0, column=1, sticky='EW')
+        
+        
         # ---------------------- HOSTNAME
-        frame_hostname = Frame(frame_conteudo, bg='red', width=MENU_PRINCIPAL_WIDTH-(MENU_PRINCIPAL_PADX*3),height=21)
+        
+        frame_hostname = Frame(frame_conteudo, width=MENU_PRINCIPAL_WIDTH-(MENU_PRINCIPAL_PADX*3),height=21) # bg:red
         frame_hostname.grid_columnconfigure(0, weight=1)
         frame_hostname.grid_columnconfigure(1, weight=9)
         frame_hostname.grid_propagate(0)
@@ -86,7 +105,7 @@ class Menu_Principal_Get_Host_Info(Frame):
 
 
         # ---------------------- HOST
-        frame_host = Frame(frame_conteudo, bg='blue', width=MENU_PRINCIPAL_WIDTH-(MENU_PRINCIPAL_PADX*3),height=21)
+        frame_host = Frame(frame_conteudo, width=MENU_PRINCIPAL_WIDTH-(MENU_PRINCIPAL_PADX*3),height=21) # bg:blue
         frame_host.grid_columnconfigure(0, weight=1)
         frame_host.grid_columnconfigure(1, weight=9)
         frame_host.grid_propagate(0)
@@ -102,7 +121,7 @@ class Menu_Principal_Get_Host_Info(Frame):
         entry_host.grid(row = 0, column=1, sticky='EW')
 
         # ---------------------- PORTA
-        frame_porta = Frame(frame_conteudo, bg='yellow', width=MENU_PRINCIPAL_WIDTH-(MENU_PRINCIPAL_PADX*3),height=21)
+        frame_porta = Frame(frame_conteudo, width=MENU_PRINCIPAL_WIDTH-(MENU_PRINCIPAL_PADX*3),height=21) # bg:yellow
         frame_porta.grid_columnconfigure(0, weight=1)
         frame_porta.grid_columnconfigure(1, weight=9)
         frame_porta.grid_propagate(0)
@@ -118,7 +137,7 @@ class Menu_Principal_Get_Host_Info(Frame):
         entry_porta.grid(row = 0, column=1, sticky='EW')
 
         # ---------------------- USERNAME
-        frame_username = Frame(frame_conteudo, bg='green', width=MENU_PRINCIPAL_WIDTH-(MENU_PRINCIPAL_PADX*2),height=21)
+        frame_username = Frame(frame_conteudo, width=MENU_PRINCIPAL_WIDTH-(MENU_PRINCIPAL_PADX*2),height=21) # bg:green
         frame_username.grid_columnconfigure(0, weight=1)
         frame_username.grid_columnconfigure(1, weight=9)
         frame_username.grid_propagate(0)
@@ -135,7 +154,6 @@ class Menu_Principal_Get_Host_Info(Frame):
 
         # ---------------------- BOTTOM PART OF APP (TWO BUTTONS)
         frame_bottom_buttons = Frame(frame_footer, width=MENU_PRINCIPAL_WIDTH, height=21) #---------------------------<<<
-        frame_bottom_buttons.configure(bg='purple')
         frame_bottom_buttons.grid_rowconfigure(0, weight=1)
         frame_bottom_buttons.grid_columnconfigure(0, weight=5)
         frame_bottom_buttons.grid_columnconfigure(1, weight=5)
@@ -163,20 +181,24 @@ class Menu_Principal_Get_Host_Info(Frame):
         # FRAME SELF
 
         # FRAME DE SELF.CONTEUDO
-        frame_hostname.grid(row=0, column=0, padx=5, pady=(5,3), columnspan=2, sticky = 'EW')
-        frame_host.grid(row=1, column=0, padx=5, pady=(0,3), columnspan=2, sticky = 'EW')
-        frame_porta.grid(row=2, column=0, padx=5, pady=(0,3), columnspan=2, sticky = 'EW')
-        frame_username.grid(row=3, column=0, padx=5, pady=(0,3), columnspan=2, sticky = 'EW')
+        frame_zabbixserverip.grid(row=0, column=0, padx=5, pady=(5,3), columnspan=5, sticky='EW')
+        frame_hostname.grid(row=1, column=0, padx=5, pady=(0,3), columnspan=2, sticky = 'EW')
+        frame_host.grid(row=2, column=0, padx=5, pady=(0,3), columnspan=2, sticky = 'EW')
+        frame_porta.grid(row=3, column=0, padx=5, pady=(0,3), columnspan=2, sticky = 'EW')
+        frame_username.grid(row=4, column=0, padx=5, pady=(0,3), columnspan=2, sticky = 'EW')
         frame_conteudo.grid(row=0, column=0, sticky='NEW')
         
+        frame_conteudo.rowconfigure(0, weight=1)
+        frame_conteudo.columnconfigure(0, weight=1)
+        
         # FRAME DO SELF.FOOTER
-        frame_bottom_buttons.grid(row=4, column=0, padx=5, pady=(0,5), columnspan=3, sticky='SEW')
+        frame_bottom_buttons.grid(row=4, padx=5, pady=3, column=0, columnspan=3, sticky='SEW')
         frame_footer.grid(row=1, column=0, sticky='SEW')
+        frame_footer.rowconfigure(0, weight=1)
+        frame_footer.columnconfigure(0, weight=1)
         
-        self.rowconfigure(0, weight=8)
-        self.rowconfigure(1, weight=2)
-
-        
+        #self.rowconfigure(0, weight=8)
+        #self.rowconfigure(1, weight=2)
 
 class Menu_Via_Chave(Frame):
     def __init__(self, *args, **kwargs):
@@ -312,12 +334,10 @@ porta = None
 username = None
 senha = None
 
-
 def atualizar_texto_confirmacao():
     menu_confirmacao.update()
     # atualiza os valores exibidos no menu de confirmação
     # deve ser chamado ANTES de entrar no menu de confirmação (antes de gridá-lo)
-
 
 # MENU VIA SENHA ------------------------------------
 def via_senha_click(c_hostname, c_host, c_porta, c_username):
@@ -334,8 +354,6 @@ def via_senha_click(c_hostname, c_host, c_porta, c_username):
     menu_via_senha.grid()
     # do menu principal escolheu ir pro menu de senha
 
-    
-
 def senha_continuar_click(c_senha):
     global senha
     senha = c_senha
@@ -348,9 +366,6 @@ def senha_voltar_click():
     menu_via_senha.grid_forget()
     menu_principal.grid()
     # envia pro menu principal
-
-
-
 
 # MENU VIA CHAVE ------------------------------------
 def via_chave_click(c_hostname, c_host, c_porta, c_username):
@@ -366,7 +381,6 @@ def via_chave_click(c_hostname, c_host, c_porta, c_username):
 
     menu_via_chave.grid()
     # do menu principal escolheu ir pro menu de chaves.
-
 
 def chave_mudarkeypath_click(novo_keypath, textvar):
     global key
@@ -385,15 +399,11 @@ def chave_voltar_click():
     menu_principal.grid()
     # envia pro menu principal
 
-
-
-
 # MENU CONFIRMAÇÃO ------------------------------------
 def confirm_reconfigurar_click():
     menu_confirmacao.grid_forget()
     menu_principal.grid()
     # envia pro menu principal
-
 
 def confirm_instalar_click():
     print("INSTALAR CLICK")
@@ -411,26 +421,19 @@ def confirm_instalar_click():
 # Widgets
 MENU_PRINCIPAL_WIDTH = LARGURA_APP
 MENU_PRINCIPAL_HEIGHT = ALTURA_APP
-
 MENU_PRINCIPAL_PADX = SHORT_PADX
 MENU_PRINCIPAL_PADY = SHORT_PADY
 
-#menu_principal = Menu_Principal_Get_Host_Info(style='Principal.TFrame', width=LARGURA_APP-(MENU_PRINCIPAL_PADX*2), height=ALTURA_APP-(MENU_PRINCIPAL_PADY*2))
-#menu_principal = Menu_Principal_Get_Host_Info(width=LARGURA_APP-(MENU_PRINCIPAL_PADX*2), height=ALTURA_APP-(MENU_PRINCIPAL_PADY*2), bg='grey')
-menu_principal = Menu_Principal_Get_Host_Info(width=MENU_PRINCIPAL_WIDTH-((MENU_PRINCIPAL_PADX*2)-MENU_PRINCIPAL_PADX), height=MENU_PRINCIPAL_HEIGHT-(MENU_PRINCIPAL_PADY*3), bg='#add8e6')
-
-
-
+menu_principal = Menu_Principal_Get_Host_Info(width=MENU_PRINCIPAL_WIDTH-((MENU_PRINCIPAL_PADX*2)-MENU_PRINCIPAL_PADX), height=MENU_PRINCIPAL_HEIGHT-(MENU_PRINCIPAL_PADY*3)) # bg:#add8e6
 menu_via_chave = Menu_Via_Chave()
-
 menu_via_senha = Menu_Via_Senha()
-
 menu_confirmacao = Menu_Confirmacao()
 
 # a partir de root
 
-menu_principal.grid(row=0, column=0, padx=MENU_PRINCIPAL_PADX, pady=MENU_PRINCIPAL_PADY, sticky='NSWE')
-
+menu_principal.grid(row=0, column=0, padx=5, pady=10, sticky='NSWE')
+menu_principal.rowconfigure(0, weight=1)
+menu_principal.columnconfigure(0, weight=1)
 
 root.mainloop()
 
